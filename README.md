@@ -19,11 +19,11 @@ After converting to the HSV colour space, the bilaterally filtered image is scan
 
 
 
-## Kmeans clustering
+### Kmeans clustering
 The script 'color_detection_training_general_colors.py' uses example pictures (from directory: 'Images_training_general') of which color the resistor bands could exist. These are pictures made of the color bands with a snipping app on my pc from resistorpictures from the internet and resistors at home. The mean BGR-values from each picture are devided into clusters.
 In 'color_detection_testing.py' k_nearest_neighbors is used to then put the pixel values of the color bands in a certain category cluster to define the color.
 
-## Cluster training
+### Cluster training
 If you want to plot the Blue and Red values of the clusters RGB-values: 
 Run one of the 'color_detection_training...'- scripts.
 The one i focused on and used data from is 'color_detection_training_specific_resistorfactory'
@@ -31,11 +31,11 @@ The script 'color_detection_training_general_colors' is not trained enough (not 
 
 
 
-## Limitations
+### Limitations
 Cameras have a hard time picking up the reflective bands. Depending on the lighting, the bands may look white or even the colour of nearby objects. It is for this reason that the tolerance is not calculated.
 
 
-# Get started by yourself
+## Get started by yourself
 Python version: 3.6.8,
 Install all needed packages for code.
 
@@ -47,7 +47,7 @@ Use input images out of directory 'input_images'.
 In the directory 'Output_images_code', there are results of the input images that are used by myself. In the name of
 each picture, the result of the resistorvalue, colors of the 3 bands and minimum used area is given.
 
-# Important for contour detection colorbands!
+### Important for contour detection colorbands!
 Change the parameter 'MIN_AREA' on line 28 in 'main.py'. This is de minimal area the 
 contours must possess so we count it as a colorband. Sometimes with different pictures depending on the zooming,
 this script can either see too many contours or too less contours.
