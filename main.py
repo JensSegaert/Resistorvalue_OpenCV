@@ -345,6 +345,7 @@ def get_color_bands(Left, Right, BGR_list):
     image = editted_output.save(f"{path_images_code}\\editted_image.png")
 
     resistor_close_up_for_rectangles_bands = cv2.imread(path_images_code + '\\editted_image.png')
+    
     # Make a copy of image
     copy_resistor_clean = resistor_close_up_for_rectangles_bands.copy()
 
@@ -357,6 +358,7 @@ def get_color_bands(Left, Right, BGR_list):
         Rightmostpoint_single_contour_y = Right[contour_number][1]
         print(Leftmostpoint_single_contour_x)
         Contour_center_list.append([[(Leftmostpoint_single_contour_x + Rightmostpoint_single_contour_x)/2] , [(Leftmostpoint_single_contour_y + Rightmostpoint_single_contour_y)/2]])
+    
     print('Contour_center_list')
     print(Contour_center_list)
 
@@ -394,6 +396,7 @@ def get_color_bands(Left, Right, BGR_list):
         avg_color_center_contour = np.average(avg_color_per_row_contourcenter, axis=0)
         tuple_avg_color_center_contour = tuple(avg_color_center_contour)
         list_avg_color_contours.append(list(avg_color_center_contour))
+        
         print('avg_color_center_contour')
         print(tuple_avg_color_center_contour)
         print(list_avg_color_contours)
