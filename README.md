@@ -1,6 +1,6 @@
 Author = Jens Segaert
 
-Machine vision projcet for obtaining bachelor's degree in industrial sciences electromechanics.
+Machine vision projcet for obtaining bachelor's degree in industrial sciences electromechanical engineering.
 
 
 
