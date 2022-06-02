@@ -1,6 +1,6 @@
 Author = Jens Segaert
 
-Machine vision project for obtaining bachelor's degree in industrial sciences electromechanical engineering.
+Machine vision project for obtaining Bachelor's degree in industrial sciences electromechanical engineering.
 
 # Resistorvalue_Open-cv
 A python script using OpenCV and haar cascades to identify and calculate the values of resistors from a single input image.
