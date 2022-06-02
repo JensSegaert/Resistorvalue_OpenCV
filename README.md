@@ -5,7 +5,7 @@ Machine vision project for obtaining Bachelor's degree in industrial sciences el
 # Resistorvalue_Open-cv
 A python script using OpenCV and haar cascades to identify and calculate the values of resistors from a single input image.
 
-![Screenshot](Image_result__56000 OHM,['Green', 'Blue', 'Orange'],MIN_AREA=700.jpg)
+
 ## How it works
 
 ### Haar Cascade
