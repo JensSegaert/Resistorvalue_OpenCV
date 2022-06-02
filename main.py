@@ -32,7 +32,7 @@ MIN_AREA = 700
 path_images_code = 'C:\\Users\\Jens Segaert\\Documents\\GitHub\\case1\\ResistorValue_Open-cv\\images_code'
 
 # Edit: choose path of image input of resistor
-path_image = "C:\\Users\\Jens Segaert\\Documents\\GitHub\\case1\\ResistorValue_Open-cv\\input_images\\img_18.png"
+path_image = "C:\\Users\\Jens Segaert\\Documents\\GitHub\\case1\\ResistorValue_Open-cv\\input_images\\img_4.png"
 
 # Edit: path to save result
 path_result = 'C:\\Users\\Jens Segaert\\Documents\\GitHub\\case1\\ResistorValue_Open-cv\\result'
