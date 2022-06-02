@@ -7,7 +7,7 @@ A python script using OpenCV and haar cascades to identify and calculate the val
 
 
 <p align="center">
-  src="https://github.com/JensSegaert/Resistorvalue_OpenCV/blob/main/result/Image_result__56000%20OHM%2C%5B'Green'%2C%20'Blue'%2C%20'Orange'%5D%2CMIN_AREA%3D700.jpg">
+  <src="https://github.com/JensSegaert/Resistorvalue_OpenCV/blob/main/result/Image_result__56000%20OHM%2C%5B'Green'%2C%20'Blue'%2C%20'Orange'%5D%2CMIN_AREA%3D700.jpg">
 </p>
 
 ## How it works
