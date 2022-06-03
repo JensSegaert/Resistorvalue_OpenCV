@@ -4,24 +4,16 @@ import matplotlib.pyplot as plt
 import cv2
 
 
-Left = [(28, 144), (67, 195), (138, 139), (220, 187), (300, 39)]
+# Example list of left points of contours
+Left = [(117, 112), (181, 46), (244, 155)]
 
-Right = [(54, 125), (103, 174), (181, 49), (261, 46), (363, 105)]
+# Example list of right points of contours
+Right = [(153, 44), (213, 161), (270, 159)]
 
 def get_color_bands(Left, Right):
+    
     print('begin function testing')
-    """
-    print(Y)
-    Y_points_contour_leftpoint = []
-    for w in range(len(Y)):
-        Y_points_contour_leftpoint.append(Y[w][1])
-    print(Y_points_contour_leftpoint)
-    Reference_Y_point = Y[0][1]
-    for r in range(len(Y_points_contour_leftpoint)):
-        print(range(Reference_Y_point-10, Reference_Y_point+10))
-        if not Y_points_contour_leftpoint[r] in range(Reference_Y_point-10, Reference_Y_point+10):
-            del Y_points_contour_leftpoint[r]
-    """
+    
     if len(Left) > 3:
         del Left[3:]
     if len(Left) < 3:
@@ -42,7 +34,7 @@ def get_color_bands(Left, Right):
     print(Right)
     Contour_center_list = []
     # get center point of each contour by taking mean value of x and y : [(x1+x2)/2 , (y1+y2)/2]
-    resistor_close_up_for_rectangles_bands = cv2.imread("C:\\Users\\Jens Segaert\\Documents\\Resistorvalue_OpenCV-main\\resistor_close-up.jpg")
+    resistor_close_up_for_rectangles_bands = cv2.imread("C:\\Users\\Jens Segaert\\Documents\\Resistorvalue_OpenCV-main\\images_code\\resistor_close-up.jpg")
     copy_resistor_clean = resistor_close_up_for_rectangles_bands.copy()
     for contour_number in range(len(Left)):
         Leftmostpoint_single_contour_x = Left[contour_number][0]
@@ -72,20 +64,17 @@ def get_color_bands(Left, Right):
         right = x + 5
         bottom = y - 8
         rectangle_colorband = cv2.rectangle(resistor_close_up_for_rectangles_bands, (left,bottom),(right,top),(255,255,255),1)
-        # get new image of contour center
-
+        
+        # Get new image of contour center
         im1 = copy_resistor_clean[bottom: top, left: right]
-        cv2.imwrite('Resistor_center_band_close_up' + str(contour_center) + '.jpg', im1)
-
+        
+        # Show image of contourcenters
         cv2.imshow('Band_contour_center', rectangle_colorband)
-        cv2.imwrite('Band_contour_centers.jpg', rectangle_colorband)
+       
 
-        # crop center of band in form of rectangle out of image
+        # Crop center of band in form of rectangle out of image
         cv2.imread('resistor_close-up.jpg')
-        #contour_center_rectangle_crop = resistor_close_up_for_rectangles_bands[left,top,right,bottom]
-        #cv2.imwrite('Contour_center_rectangle' + contour_center + '.jpg',contour_center_rectangle_crop)
-        # give parameters
-
+    
 
         # Calculate mean BGR value of contour center rectangle image
         avg_color_per_row_contourcenter = numpy.average(im1, axis=0)
@@ -97,7 +86,7 @@ def get_color_bands(Left, Right):
         print(list_avg_color_contours)
 
 
-    # define cluster center list from training
+    # Define cluster center list from training
     list_cluster_centers = [[77.97934922 , 45.3455106 , 58.58180156],
         [35.25962515 , 153.31155993 , 183.01552692],
         [49.94317435 , 83.70944468 , 203.27440964],
