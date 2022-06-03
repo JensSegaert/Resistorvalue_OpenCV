@@ -51,7 +51,7 @@ Python version: 3.6.8,
 Install all needed packages for code.
 
 Get input images out of directory 'input_images'. You can put your own resistor pictures in this directory as well.
-You need to change paths (line 31 to line 41 in 'main.py') and the minimum area at line 28 needed for contour validation of resistorbands. 
+You need to change paths (line 38 to line 48 in 'main.py') and the minimum area at line 36 needed for contour validation of resistorbands. 
 If you want to see images of the steps on how your input image is being procesed? --> look in directory 'images_code' after running the script.
 If you want to see the result of your input image? --> look in directory 'result'.
 Use input images out of directory 'input_images'.
