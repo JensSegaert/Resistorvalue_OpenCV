@@ -19,14 +19,14 @@ def get_color_bands(Left, Right):
         del Left[3:]
     if len(Left) < 3:
         print('must have 3 contours to detect resistor')
-        return    # Stop function
+        return    # Stop function because all contours are not detected
     else: # So if there are 3 contours
         Left = Left
     if len(Right) > 3:
         del Right[3:]
     if len(Right) < 3:
         print('must have 3 contours to detect resistor')
-        return    # Stop function
+        return    # Stop function because all contours are not detected
     else: # So if there are 3 contours
         Right= Right
     print('Left')
@@ -38,6 +38,7 @@ def get_color_bands(Left, Right):
     # Define path for image used in testing
     path_editted_image = "C:\\Users\\Jens Segaert\\Documents\\Resistorvalue_OpenCV-main\\images_code\\editted_image.png"
 
+    # Open the image
     img = Image.open(path_editted_image)
 
     # Adjust image color balance
@@ -161,8 +162,10 @@ def get_color_bands(Left, Right):
 
 def calculate_result(color_list_bands):
     print('begin showing result')
+    
     string_first_2bands = ''
-    # integer string of first 2 bands
+    
+    # Create integer string of first 2 bands
     for y in range(0,len(color_list_bands)-1):
         if color_list_bands[y] == 'Black':
             string_first_2bands += '0'
@@ -186,7 +189,7 @@ def calculate_result(color_list_bands):
             string_first_2bands += '9'
     bands_int = int(string_first_2bands)
 
-    # multiply int with tenfold determined by color third resistorband
+    # Multiply int with tenfold determined by color third resistorband
     if color_list_bands[2] == 'Black':
         bands_int = bands_int *  10**0
     if color_list_bands[2] == 'Brown':
