@@ -40,7 +40,8 @@ Run one of the 'color_detection_training...'- scripts.
 The one i focused on and used data from is 'color_detection_training_specific_resistorfactory'
 The script 'color_detection_training_general_colors' is not trained enough (not enough pictures for training).
 
-
+### Clustercenters
+The clustercenters of all colors is then used to compare to the contourcenters of the colorbands preceded by a color balance on the close-up image of our resistor.
 
 ### Limitations
 Cameras have a hard time picking up the reflective bands. Depending on the lighting, the bands may look white or even the colour of nearby objects. It is for this reason that the tolerance is not calculated.
