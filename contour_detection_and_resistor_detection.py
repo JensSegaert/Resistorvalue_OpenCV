@@ -1,9 +1,6 @@
 import cv2
 import numpy as np
-import os
-import imutils
-import PIL
-import klearn
+
 
 
 DEBUG = False
@@ -28,12 +25,12 @@ MIN_AREA = 700
 FONT = cv2.FONT_HERSHEY_SIMPLEX
 
 
-# required for trackbars
+# Required for trackbars
 def empty(x):
     pass
 
 
-# initializing haar cascade and video source
+# Initializing haar cascade and video source
 def init(DEBUG, path):
     if (DEBUG):
         cv2.namedWindow("frame")
@@ -45,30 +42,36 @@ def init(DEBUG, path):
         cv2.createTrackbar("uv", "frame", 0, 255, empty)
     resClose = []
     img = cv2.imread(path)
+
+    # Convert to grayscale
     gliveimg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # Load resistor haar cascade classifier
     rectcascade = cv2.CascadeClassifier("C:\\Users\\Jens Segaert\\Documents\\Resistorvalue_OpenCV-main\\cascade\\haarcascade_resistors_0.xml")
     ressfind = rectcascade.detectMultiScale(img, scaleFactor=scale_factor, minNeighbors=min_neighbors, minSize=min_size)
+
     if len(ressfind) != 0:
         # create the bounding box around the detected resistor
         for (x, y, w, h) in ressfind:
             roi_gray = gliveimg[y:y + h, x:x + w]
             roi_color = img[y:y + h, x:x + w]
             cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 1)
+            
+            # Apply secondPass to filter false positives
             secondPass = rectcascade.detectMultiScale(roi_gray, 1.01, 5)
             if (len(secondPass) != 0):
                 resClose.append((np.copy(roi_color), (x, y, w, h)))
     cv2.imshow("Resistor Detection", img)
-    cv2.imwrite('detected_resistor_by_haarcascade.jpg', img)
     k = cv2.waitKey(30)
-    if k == 27:  # wait for ESC key to exit
+    if k == 27:  # Wait for ESC key to exit
         cv2.destroyAllWindows()
     print(resClose)
     return (img, rectcascade)
 
 
-# returns true if contour is valid, false otherwise
+# Returns true if contour is valid, false otherwise
 def validContour(cnt):
-    # looking for a large enough area and correct aspect ratio
+    # Looking for a large enough area and correct aspect ratio
     if (cv2.contourArea(cnt) < MIN_AREA):
         return False
     else:
@@ -79,22 +82,21 @@ def validContour(cnt):
     return True
 
 
-# evaluates the resistance value based on the bands detected
 
 
-# uses haar cascade to identify resistors in the image
+# Uses haar cascade to identify resistors in the image
 def findResistors(img, rectCascade):
     gliveimg = cv2.cvtColor(cliveimg, cv2.COLOR_BGR2GRAY)
     resClose = []
 
-    # detect resistors in main frame
+    # Detect resistors in main frame
     ressFind = rectCascade.detectMultiScale(gliveimg, 1.1, 25)
     for (x, y, w, h) in ressFind:  # SWITCH TO H,W FOR <CV3
 
         roi_gray = gliveimg[y:y + h, x:x + w]
         roi_color = cliveimg[y:y + h, x:x + w]
 
-        # apply another detection to filter false positives
+        # Apply another detection to filter false positives
         secondPass = rectCascade.detectMultiScale(roi_gray, 1.01, 5)
 
         if (len(secondPass) != 0):
@@ -102,7 +104,8 @@ def findResistors(img, rectCascade):
     return resClose
 
 list_bandspos = []
-# analysis close up image of resistor to identify bands
+
+# Analysis close up image of resistor to identify bands
 def findBands(resistorInfo, DEBUG):
     if (DEBUG):
         uh = cv2.getTrackbarPos("uh", "frame")
@@ -111,29 +114,35 @@ def findBands(resistorInfo, DEBUG):
         lh = cv2.getTrackbarPos("lh", "frame")
         ls = cv2.getTrackbarPos("ls", "frame")
         lv = cv2.getTrackbarPos("lv", "frame")
-    # enlarge image
+
+    # Enlarge image
     resImg = cv2.resize(resistorInfo[0], (400, 200))
     print('resistorinfo')
     print(resistorInfo[0])
 
+    # Show image of close-up
     cv2.imshow('resistor_close_up', resImg)
-    cv2.imwrite('resistor_close-up.jpg', resImg)
-    # save resistor close up
+
+    # Save resistor close up
     resPos = resistorInfo[1]
-    # apply bilateral filter and convert to hsv
-    pre_bil = cv2.bilateralFilter(resImg, 5, 80, 80)
+
+    # Apply bilateral filter and convert to hsv
+    pre_bil = cv2.bilateralFilter(resImg, 15, 80, 80)
     hsv = cv2.cvtColor(pre_bil, cv2.COLOR_BGR2HSV)
-    # edge threshold filters out background and resistor body
+
+    # Edge threshold filters out background and resistor body
     thresh = cv2.adaptiveThreshold(cv2.cvtColor(pre_bil, cv2.COLOR_BGR2GRAY), 255, cv2.ADAPTIVE_THRESH_MEAN_C,
                                    cv2.THRESH_BINARY, 59, 5)
     thresh = cv2.bitwise_not(thresh)
+    
+    # Show tresholded image of close-up
     cv2.imshow('resistor_close_up_tresholded', thresh)
-    cv2.imwrite('resistor_close_up_tresholded.jpg', thresh)
+
 
     bandsPos_left = []
     bandsPos_right = []
 
-    # if in debug mode, check only one colour
+    # If in debug mode, check only one colour
     if (DEBUG):
         checkColours = COLOUR_BOUNDS[0:1]
     else:
@@ -153,12 +162,9 @@ def findBands(resistorInfo, DEBUG):
         print(clr)
         mask = cv2.bitwise_and(mask, thresh, mask=mask)
         im2, contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        #blank = np.zeros(thresh.shape[:2], dtype='uint8')
-        #cv2.drawContours(blank, contours, -1, (255, 0, 0), 1)
-        #cv2.imwrite("Contours_blank.png", blank)
-        #print(contours)
 
-        # filter invalid contours, store valid ones
+
+        # Filter invalid contours, store valid ones
         for k in range(len(contours) - 1, -1, -1):
             print(len(contours))
             if (validContour(contours[k])):
@@ -172,43 +178,37 @@ def findBands(resistorInfo, DEBUG):
             else:
                 contours.pop(k)
 
-        print('leftmostpoint')
-        #print(leftmostPoint)
-        print('rightmostpoint')
-        #print(rightmostPoint)
-
+        # Draw contours
         cv2.drawContours(pre_bil, contours, -1, clr[-1], 3)
+
         if (DEBUG):
             cv2.imshow("mask", mask)
             cv2.imshow('thresh', thresh)
 
-    cv2.imshow('Contour Display', pre_bil)  # shows the most recent resistor checked.
-    cv2.imshow('Contour Display', pre_bil)  #
-    cv2.imwrite('Contour_kleurbanden.jpg', pre_bil)
+    cv2.imshow('Contour Display', pre_bil)  # Shows the most recent resistor checked.
+    
     print('sorted bandspos_left')
     print(sorted(bandsPos_left))
     print('sorted bandspos_right')
     print(sorted(bandsPos_right))
     print('contours')
     print(contours)
+
     return sorted(bandsPos_left), sorted(bandsPos_right)
 
 
 
-# MAIN
-path = "C:\\Users\\Jens Segaert\\Documents\\GitHub\\case1\\ResistorValue_Open-cv\\images\\img.png"
-img, rectCascade = init(DEBUG, path)
+# Call functions
 
-for j in range(0,5):
+path = "C:\\Users\\Jens Segaert\\Documents\\ResistorValue_OpenCV-main\\input_images\\img_4.png"
+img, rectCascade = init(DEBUG, path)
+while (not (cv2.waitKey(1) == ord('q'))):
     cliveimg = cv2.imread(path)
     resClose = findResistors(cliveimg, rectCascade)
     for i in range(len(resClose)):
         bandsPos_left, bandsPos_right = findBands(resClose[i], DEBUG)
-        # import function of Color_detection_testing
-        # import Color_detection_testing
-        # Color_detection_testing.get_color_bands(leftmostpoints_contours)
+
     cv2.imshow("Frame", cliveimg)
 
 
-cv2.waitKey(2)
 cv2.destroyAllWindows()
