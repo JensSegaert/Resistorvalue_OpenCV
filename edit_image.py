@@ -16,5 +16,5 @@ def edit_input_image(path_image):
     colored_output.show()
     return
 
-edit_input_image('C:\\Users\\Jens Segaert\\Documents\\GitHub\\case1\\ResistorValue_Open-cv\\input_images\\img.png')
+edit_input_image('C:\\Users\\Jens Segaert\\Documents\\Resistorvalue_OpenCV-main\\input_images\\img.png')
 
