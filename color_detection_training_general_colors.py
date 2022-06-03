@@ -1,37 +1,14 @@
+import os.path
 import os
-import pandas as pd
 import matplotlib.pyplot as plt
-from math import sqrt
-from collections import defaultdict
 from sklearn.cluster import KMeans
 import numpy
-from sklearn.decomposition import PCA
-from os import listdir, makedirs
-from os.path import isfile, join
 import matplotlib.pylab as plt
-import matplotlib.image as mpimg
 import cv2
 import numpy as np
 from PIL import Image
-import os.path, sys
+import os.path
 
-import os
-import pandas as pd
-import matplotlib.pyplot as plt
-from math import sqrt
-from collections import defaultdict
-from sklearn.cluster import KMeans
-import numpy
-from sklearn.decomposition import PCA
-from os import listdir,makedirs
-from os.path import isfile,join
-import matplotlib.pylab as plt
-import matplotlib.image as mpimg
-import cv2
-import numpy as np
-from PIL import Image
-import os.path, sys
-import seaborn as sns
 
 path = "C:\\Users\\Jens Segaert\\Documents\\Resistorvalue_OpenCV-main\\images_training_specific_resistorfactory_no-artificial-lighting"
 dirs = os.listdir(path)
