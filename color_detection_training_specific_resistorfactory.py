@@ -1,3 +1,4 @@
+import os.path
 import os
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
@@ -7,6 +8,7 @@ import cv2
 import numpy as np
 from PIL import Image
 import os.path
+
 
 path = "C:\\Users\\Jens Segaert\\Documents\\Resistorvalue_OpenCV-main\\images_training_specific_resistorfactory_no-artificial-lighting"
 dirs = os.listdir(path)
