@@ -1,4 +1,11 @@
-# Import 
+#########################################################################################################################
+""""
+Author: Jens Segaert
+Date: 03/06/2022
+"""
+#########################################################################################################################
+
+# Import Libraries
 import cv2
 import numpy as np
 import os
@@ -337,7 +344,7 @@ def get_color_bands(Left, Right, BGR_list):
     resistor_close_up_for_rectangles_bands = cv2.imread("C:\\Users\\Jens Segaert\\Documents\\GitHub\\case1\\ResistorValue_Open-cv\\images_code\\bilateral-filter.jpg")
 
 
-    # Line 331-343: Adjust close up image of resistor with color balance
+    # Line 348-358: Adjust close up image of resistor with color balance
     # Open the image
     img = Image.open(path_images_code + '\\bilateral-filter.jpg')
 
