@@ -8,7 +8,7 @@ import numpy as np
 from PIL import Image
 import os.path
 
-path = "C:\\Users\\Jens Segaert\\Documents\\GitHub\case1\\ResistorValue_Open-cv\\images_training_specific_resistorfactory_no-artificial-lighting"
+path = "C:\\Users\\Jens Segaert\\Documents\\Resistorvalue_OpenCV-main\\images_training_specific_resistorfactory_no-artificial-lighting"
 dirs = os.listdir(path)
 
 def training_clustering(path):
