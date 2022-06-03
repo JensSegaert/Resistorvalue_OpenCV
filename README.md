@@ -29,6 +29,11 @@ After converting to the HSV colour space, the bilaterally filtered image is scan
 The script 'color_detection_training_general_colors.py' uses example pictures (from directory: 'Images_training_general') of which color the resistor bands could exist. These are pictures made of the color bands with a snipping app on my pc from resistorpictures from the internet and resistors at home. The mean BGR-values from each picture are devided into clusters.
 In 'color_detection_testing.py' k_nearest_neighbors is used to then put the pixel values of the color bands in a certain category cluster to define the color.
 
+![image](https://user-images.githubusercontent.com/100967939/171759675-7efc3c9e-4e50-4655-a651-092d48a57b0a.png)
+
+
+
+
 ### Cluster training
 If you want to plot the Blue and Red values of the clusters RGB-values: 
 Run one of the 'color_detection_training...'- scripts.
