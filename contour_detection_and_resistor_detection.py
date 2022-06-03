@@ -46,7 +46,7 @@ def init(DEBUG, path):
     resClose = []
     img = cv2.imread(path)
     gliveimg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    rectcascade = cv2.CascadeClassifier("C:\\Users\\Jens Segaert\\Documents\\GitHub\\case1\\OhmVision-Kmeans\\cascade\\haarcascade_resistors_0.xml")
+    rectcascade = cv2.CascadeClassifier("C:\\Users\\Jens Segaert\\Documents\\Resistorvalue_OpenCV-main\\cascade\\haarcascade_resistors_0.xml")
     ressfind = rectcascade.detectMultiScale(img, scaleFactor=scale_factor, minNeighbors=min_neighbors, minSize=min_size)
     if len(ressfind) != 0:
         # create the bounding box around the detected resistor
