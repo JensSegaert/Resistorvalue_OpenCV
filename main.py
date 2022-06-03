@@ -82,9 +82,9 @@ def init(DEBUG, path_image):
             roi_gray = gliveimg[y:y + h, x:x + w]
             roi_color = img[y:y + h, x:x + w]
             cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            #secondPass = rectcascade.detectMultiScale(roi_gray, 1.01, 25)
-            #if (len(secondPass) != 0):
-                #resClose.append((np.copy(roi_color), (x, y, w, h)))
+            secondPass = rectcascade.detectMultiScale(roi_gray, 1.01, 25)
+            if (len(secondPass) != 0):
+                resClose.append((np.copy(roi_color), (x, y, w, h)))
 
     # Show image of detected resistor and save it in folder 'images_code'
     cv2.imshow("Resistor Detection", img)
