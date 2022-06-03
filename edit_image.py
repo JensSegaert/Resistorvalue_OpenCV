@@ -16,5 +16,6 @@ def edit_input_image(path_image):
     colored_output.show()
     return
 
+# Call function (input: given path of image that needs to be editted)
 edit_input_image('C:\\Users\\Jens Segaert\\Documents\\Resistorvalue_OpenCV-main\\input_images\\img.png')
 
