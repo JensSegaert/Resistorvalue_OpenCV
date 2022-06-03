@@ -77,11 +77,13 @@ def init(DEBUG, path_image):
     ressfind = rectcascade.detectMultiScale(img, scaleFactor=scale_factor, minNeighbors=min_neighbors, minSize=min_size)
 
     if len(ressfind) != 0:
-        # create the bounding box around the detected resistor
+        # Create the bounding box around the detected resistor
         for (x, y, w, h) in ressfind:
             roi_gray = gliveimg[y:y + h, x:x + w]
             roi_color = img[y:y + h, x:x + w]
             cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            
+            # Apply another detection to filter false positives
             secondPass = rectcascade.detectMultiScale(roi_gray, 1.01, 25)
             if (len(secondPass) != 0):
                 resClose.append((np.copy(roi_color), (x, y, w, h)))
@@ -97,7 +99,7 @@ def init(DEBUG, path_image):
 def validContour(cnt):
     print('begin validContour')
 
-    # looking for a large enough area and correct aspect ratio
+    # Looking for a large enough area and correct aspect ratio
     if (cv2.contourArea(cnt) < MIN_AREA):
         return False
     else:
@@ -114,6 +116,7 @@ def validContour(cnt):
 # Uses haar cascade to identify resistors in the image
 def findResistors(img, rectCascade):
     print('begin findResistors')
+    
     gliveimg = cv2.cvtColor(cliveimg, cv2.COLOR_BGR2GRAY)
     resClose = []
 
@@ -148,7 +151,7 @@ def findBands(resistorInfo, DEBUG):
     # Enlarge image
     resImg = cv2.resize(resistorInfo[0], (400, 200))
 
-
+    # Save image of close-up
     cv2.imwrite(os.path.join(path_images_code, 'resistor_close-up.jpg'), resImg)
 
     resPos = resistorInfo[1]
@@ -193,6 +196,7 @@ def findBands(resistorInfo, DEBUG):
 
         print('contours')
         print(contours)
+        
         # Filter invalid contours, store valid ones
         for k in range(len(contours) - 1, -1, -1):
             print(len(contours))
@@ -229,14 +233,18 @@ def findBands(resistorInfo, DEBUG):
 # Define function for clustertraining of color images
 def training_clustering(path_for_training):
         print('begin training kmeans')
+        
         """
            Description: take all pictures in directory 'Images_training_specific_resistorfactory_no-artificial-lighting'
            --> take mean pixel value of each picture
            --> cluster all RGB-values of each picture
         """
+        
         dirs = os.listdir(path_for_training)
         BGR_list = []
         BR_list = []
+        
+        # Loop in directory for images
         for item in dirs:
             fullpath = os.path.join(path_for_training, item)
             if os.path.isfile(fullpath):
@@ -301,7 +309,7 @@ def get_color_bands(Left, Right, BGR_list):
     print('begin get_color_bands')
 
     # Check if we have 3 resistorband-contours as we need. If less --> stop function,
-    # if more --> delete last contours leftmostpoints and rightmostpoints
+    # If more --> delete last contours leftmostpoints and rightmostpoints
     if len(Left) > 3:
         del Left[3:]
     if len(Left) < 3:
@@ -341,6 +349,7 @@ def get_color_bands(Left, Right, BGR_list):
 
     # Output editted input image
     editted_output = enhancer.enhance(factor)
+    
     # Save image in folder 'images_code'
     image = editted_output.save(f"{path_images_code}\\editted_image.png")
 
