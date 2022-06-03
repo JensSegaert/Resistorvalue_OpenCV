@@ -42,7 +42,7 @@ def get_color_bands(Left, Right):
     print(Right)
     Contour_center_list = []
     # get center point of each contour by taking mean value of x and y : [(x1+x2)/2 , (y1+y2)/2]
-    resistor_close_up_for_rectangles_bands = cv2.imread("C:\\Users\\Jens Segaert\\Documents\\ResistorValue_OpenCV-main\\resistor_close-up.jpg")
+    resistor_close_up_for_rectangles_bands = cv2.imread("C:\\Users\\Jens Segaert\\Documents\\Resistorvalue_OpenCV-main\\resistor_close-up.jpg")
     copy_resistor_clean = resistor_close_up_for_rectangles_bands.copy()
     for contour_number in range(len(Left)):
         Leftmostpoint_single_contour_x = Left[contour_number][0]
