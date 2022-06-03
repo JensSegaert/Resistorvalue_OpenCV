@@ -29,16 +29,16 @@ FONT = cv2.FONT_HERSHEY_SIMPLEX
 MIN_AREA = 700
 
 # Edit: path to save all images from running code in folder 'images_code'
-path_images_code = 'C:\\Users\\Jens Segaert\\Documents\\GitHub\\case1\\ResistorValue_Open-cv\\images_code'
+path_images_code = 'C:\\Users\\Jens Segaert\\Documents\\Resistorvalue_OpenCV-main\\images_code'
 
 # Edit: choose path of image input of resistor
-path_image = "C:\\Users\\Jens Segaert\\Documents\\GitHub\\case1\\ResistorValue_Open-cv\\input_images\\img_4.png"
+path_image = "C:\\Users\\Jens Segaert\\Documents\\Resistorvalue_OpenCV-main\\input_images\\img_4.png"
 
 # Edit: path to save result
-path_result = 'C:\\Users\\Jens Segaert\\Documents\\GitHub\\case1\\ResistorValue_Open-cv\\result'
+path_result = 'C:\\Users\\Jens Segaert\\Documents\\Resistorvalue_OpenCV-main\\result'
 
 # Edit: path for training
-path_for_training = "C:\\Users\\Jens Segaert\\Documents\\GitHub\\case1\\ResistorValue_Open-cv\\images_training_specific_resistorfactory_no-artificial-lighting"
+path_for_training = "C:\\Users\\Jens Segaert\\Documents\\Resistorvalue_OpenCV-main\\images_training_specific_resistorfactory_no-artificial-lighting"
 
 
 
