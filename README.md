@@ -6,9 +6,8 @@ Machine vision project for obtaining Bachelor's degree in industrial sciences el
 A python script using OpenCV and haar cascades to identify and calculate the values of resistors from a single input image.
 
 
-<p align="center">
-  <src="https://github.com/JensSegaert/Resistorvalue_OpenCV/blob/main/result/Image_result__56000%20OHM%2C%5B'Green'%2C%20'Blue'%2C%20'Orange'%5D%2CMIN_AREA%3D700.jpg">
-</p>
+![image](https://user-images.githubusercontent.com/100967939/171759539-4aaa30c5-f5be-4f55-8b55-ec7bb25fc420.png)
+
 
 ## How it works
 
@@ -17,6 +16,8 @@ Using a Haar Cascade, an object classifier trained, in this case, to detect feat
 
 ### Adaptive Threshold
 A digital zoom is applied to each area in which a resistor was detected. The subimage is modified with a bilateral filter. An adaptive threshold is then applied which filters out the background as well as the body of the resistor itself (this minimizes the effect of the colour of the resistor). What's left from the threshold are the areas of large contrast: the coloured bands and the edges between the resistor and the background.  
+
+![image](https://user-images.githubusercontent.com/100967939/171759579-ec030cec-9f43-4a42-a260-2dd00117c477.png)
 
 
 ### Detecting the Colours
