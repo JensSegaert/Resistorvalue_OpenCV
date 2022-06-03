@@ -35,9 +35,9 @@ In 'color_detection_testing.py' k_nearest_neighbors is used to then put the pixe
 
 
 ### Cluster training
-If you want to plot the Blue and Red values of the clusters RGB-values: 
+If you want to plot the Blue and Red values of the clusters RGB-values like the image above: 
 Run one of the 'color_detection_training...'- scripts.
-The one i focused on and used data from is 'color_detection_training_specific_resistorfactory'
+The training set i used data from is the folder named: 'color_detection_training_specific_resistorfactory'
 The script 'color_detection_training_general_colors' is not trained enough (not enough pictures for training).
 
 ### Clustercenters
