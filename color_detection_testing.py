@@ -1,8 +1,6 @@
 import numpy
-import pandas as pd
 import matplotlib.pyplot as plt
 import cv2
-from scipy.spatial import distance
 from PIL import Image, ImageEnhance
 
 
