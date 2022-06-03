@@ -2,6 +2,8 @@ import numpy
 import pandas as pd
 import matplotlib.pyplot as plt
 import cv2
+from scipy.spatial import distance
+from PIL import Image, ImageEnhance
 
 
 # Example list of left points of contours
@@ -11,30 +13,45 @@ Left = [(117, 112), (181, 46), (244, 155)]
 Right = [(153, 44), (213, 161), (270, 159)]
 
 def get_color_bands(Left, Right):
-    
     print('begin function testing')
-    
+
     if len(Left) > 3:
         del Left[3:]
     if len(Left) < 3:
         print('must have 3 contours to detect resistor')
-        return    # stop function
-    else: # so if there are 3 contours
+        return    # Stop function
+    else: # So if there are 3 contours
         Left = Left
     if len(Right) > 3:
         del Right[3:]
     if len(Right) < 3:
         print('must have 3 contours to detect resistor')
-        return    # stop function
-    else: # so if there are 3 contours
+        return    # Stop function
+    else: # So if there are 3 contours
         Right= Right
     print('Left')
     print(Left)
     print('Right')
     print(Right)
     Contour_center_list = []
-    # get center point of each contour by taking mean value of x and y : [(x1+x2)/2 , (y1+y2)/2]
-    resistor_close_up_for_rectangles_bands = cv2.imread("C:\\Users\\Jens Segaert\\Documents\\Resistorvalue_OpenCV-main\\images_code\\resistor_close-up.jpg")
+
+    # Define path for image used in testing
+    path_editted_image = "C:\\Users\\Jens Segaert\\Documents\\Resistorvalue_OpenCV-main\\images_code\\editted_image.png"
+
+    img = Image.open(path_editted_image)
+
+    # Adjust image color balance
+    enhancer = ImageEnhance.Color(img)
+
+    # Image color balance factor:
+    factor = 2.5
+
+    # Output editted input image
+    editted_output = enhancer.enhance(factor)
+
+
+    # Get center point of each contour by taking mean value of x and y : [(x1+x2)/2 , (y1+y2)/2]
+    resistor_close_up_for_rectangles_bands = cv2.imread(path_editted_image)
     copy_resistor_clean = resistor_close_up_for_rectangles_bands.copy()
     for contour_number in range(len(Left)):
         Leftmostpoint_single_contour_x = Left[contour_number][0]
@@ -59,53 +76,54 @@ def get_color_bands(Left, Right):
         print(y)
 
         # Determine left, right, top and bottom for rectangle of center of resistorband
-        left = x - 5
-        top = y + 8
-        right = x + 5
-        bottom = y - 8
+        left = x - 3
+        top = y
+        right = x + 3
+        bottom = y - 15
+
         rectangle_colorband = cv2.rectangle(resistor_close_up_for_rectangles_bands, (left,bottom),(right,top),(255,255,255),1)
-        
+
         # Get new image of contour center
         im1 = copy_resistor_clean[bottom: top, left: right]
-        
+
         # Show image of contourcenters
         cv2.imshow('Band_contour_center', rectangle_colorband)
-       
 
         # Crop center of band in form of rectangle out of image
         cv2.imread('resistor_close-up.jpg')
-    
+
 
         # Calculate mean BGR value of contour center rectangle image
         avg_color_per_row_contourcenter = numpy.average(im1, axis=0)
         avg_color_center_contour = numpy.average(avg_color_per_row_contourcenter, axis=0)
         tuple_avg_color_center_contour = tuple(avg_color_center_contour)
         list_avg_color_contours.append(list(avg_color_center_contour))
+
         print('avg_color_center_contour')
         print(tuple_avg_color_center_contour)
         print(list_avg_color_contours)
 
 
     # Define cluster center list from training
-    list_cluster_centers = [[77.97934922 , 45.3455106 , 58.58180156],
-        [35.25962515 , 153.31155993 , 183.01552692],
-        [49.94317435 , 83.70944468 , 203.27440964],
-        [192.97030517 , 196.08948183 , 197.74002779],
-        [27.21584855, 34.52925435, 82.54458071],
-        [39.89947565 , 31.88809552 , 165.05747581],
-        [106.20508042, 95.75360616, 101.46961045],
-        [38.22085746 , 98.11722512 , 35.76544933],
-        [132.16414392, 85.85733214, 33.38264935],
-        [17.79363605 , 21.08848211 , 28.07800254]]
+    list_cluster_centers = [[ 38.22085746 , 98.11722512 , 35.76544933],
+    [192.97030517 ,196.08948183 ,197.74002779],
+    [ 49.94317435 , 83.70944468, 203.27440964],
+    [106.20508042  ,95.75360616 ,101.46961045],
+    [ 19.05106104  ,22.17084661  ,28.4488445 ],
+    [ 35.25962515 ,153.31155993 ,183.01552692],
+    [ 39.89947565  ,31.88809552 ,165.05747581],
+    [ 76.98457262  ,46.12645161  ,58.36318146],
+    [132.16414392  ,85.85733214  ,33.38264935],
+    [ 27.09556064  ,33.71972816  ,84.54691794]]
 
-    # make list with colors
-    list_colors = ['Purple', 'Yellow', 'Orange', 'Gray', 'Brown', 'Red', 'Green', 'Black', 'Blue', 'White']
+    # Make list with colors
+    list_colors = ['Green', 'White', 'Orange', 'Gray', 'Black', 'Yellow', 'Red',  'Purple', 'Blue', 'Brown']
 
-    from scipy.spatial import distance
+
     color_list_bands = []
-    # calculate norm between the centerband value and each color cluster center point (from training python files) in BGR
-    # and look where minimum distance is and link this minimum to a color
-    # do this for all contour bands
+    # Calculate norm between the centerband value and each color cluster center point (from training python files) in BGR
+    # And look where minimum distance is and link this minimum to a color
+    # Do this for all contour bands
     for u in range(0,len(list_avg_color_contours)):
       list_distances = []
       for w in range(0,len(list_cluster_centers)):
@@ -120,10 +138,7 @@ def get_color_bands(Left, Right):
           print('min list_distances')
           print(min(list_distances))
 
-          # make list with colors
-          list_colors = ['Purple', 'Yellow', 'Orange', 'Gray', 'Brown', 'Red', 'Green', 'Black', 'Blue', 'White']
 
-          print('ok')
 
 
       for l in range(0,len(list_distances)):
@@ -133,13 +148,11 @@ def get_color_bands(Left, Right):
       print('color_list_bands')
       print(color_list_bands)
 
-      # plot BR cluster center- values
+      # Plot BR cluster center- values
       for i in range(0, len(list_cluster_centers)):
             # plot B,R values of cluster centers of training list above
             plt.scatter(list_cluster_centers[i][0], list_cluster_centers[i][2])
 
-    #plt.legend()
-    #plt.show()
     return color_list_bands
 
 
@@ -200,3 +213,5 @@ def calculate_result(color_list_bands):
 
 color_list_bands = get_color_bands(Left, Right)
 bands_int = calculate_result(color_list_bands)
+
+cv2.waitKey(7000)
