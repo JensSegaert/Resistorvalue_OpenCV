@@ -512,6 +512,7 @@ def show_reult(result_str, x, y, w, h, folderpath_editted_image, color_list_band
 
     # Put text on image
     cv2.putText(img_for_showing_result, result_str, (x, y - 5), FONT, 0.8, (255,0,255), 2, cv2.LINE_AA)
+    
     # Show image and save result image in folder 'result'
     cv2.imshow('Result', img_for_showing_result)
     cv2.imwrite(os.path.join(path_result, 'Image_result__' + result_str + ',' + str(color_list_bands) + ',' + 'MIN_AREA=' + str(MIN_AREA) + '.jpg'), img_for_showing_result)
@@ -520,7 +521,6 @@ def show_reult(result_str, x, y, w, h, folderpath_editted_image, color_list_band
 
 
 # Call functions
-
 img, rectCascade = init(DEBUG, path_image)
 while (not (cv2.waitKey(1) == ord('q'))):
     cliveimg = cv2.imread(path_image)
