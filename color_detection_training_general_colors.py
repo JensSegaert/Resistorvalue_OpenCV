@@ -163,6 +163,6 @@ def training_clustering(path):
     plt.show()
 
 
-
+# Call function
 training_clustering(path)
 
