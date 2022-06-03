@@ -199,7 +199,6 @@ def findBands(resistorInfo, DEBUG):
 
 
 # Call functions
-
 path = "C:\\Users\\Jens Segaert\\Documents\\ResistorValue_OpenCV-main\\input_images\\img_4.png"
 img, rectCascade = init(DEBUG, path)
 while (not (cv2.waitKey(1) == ord('q'))):
