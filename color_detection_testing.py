@@ -211,7 +211,7 @@ def calculate_result(color_list_bands):
     print(str(bands_int) + ' OHM')
     return bands_int
 
-
+# Call functions
 color_list_bands = get_color_bands(Left, Right)
 bands_int = calculate_result(color_list_bands)
 
