@@ -8,6 +8,8 @@ Date: 03/06/2022
 # Import Libraries
 import cv2
 from PIL import Image, ImageEnhance
+import os
+
 
 # Function to give color balance to input image and show result image
 def edit_input_image(path_image):
