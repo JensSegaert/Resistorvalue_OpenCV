@@ -148,11 +148,11 @@ def training_clustering(path):
     for i in range(0,len(label3_list)):
         plt.scatter(label3_list[i][0], label3_list[i][1], color='Gray')
     for i in range(0,len(label4_list)):
-        plt.scatter(label4_list[i][0], label4_list[i][1], color='Red')
+        plt.scatter(label4_list[i][0], label4_list[i][1], color='Black')
     for i in range(0,len(label5_list)):
         plt.scatter(label5_list[i][0], label5_list[i][1], color='Yellow')
     for i in range(0,len(label6_list)):
-        plt.scatter(label6_list[i][0], label6_list[i][1], color='Black')
+        plt.scatter(label6_list[i][0], label6_list[i][1], color='Red')
     for i in range(0,len(label7_list)):
         plt.scatter(label7_list[i][0], label7_list[i][1], color='Purple')
     for i in range(0,len(label8_list)):
