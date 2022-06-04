@@ -13,8 +13,10 @@ from scipy.spatial import distance
 from sklearn.cluster import KMeans
 from PIL import Image, ImageEnhance
 
-
+# Predefine DEBUG as False
 DEBUG = False
+
+# List colour bounds
 COLOUR_BOUNDS = [
     [(0, 0, 0), (179, 255, 93), "BLACK", 0, (0, 0, 0)],
     [(0, 90, 10), (15, 250, 100), "BROWN", 1, (0, 51, 102)],
@@ -28,8 +30,10 @@ COLOUR_BOUNDS = [
     [(0, 0, 90), (179, 15, 250), "WHITE", 9, (255, 255, 255)],
 ];
 
+# For red mask
 RED_TOP_LOWER = (160, 30, 80)
 RED_TOP_UPPER = (179, 255, 200)
+
 FONT = cv2.FONT_HERSHEY_SIMPLEX
 
 # Edit: change 'MIN_AREA' to set minimum area for contour validation of resistorbands
@@ -54,7 +58,7 @@ def empty(x):
     pass
 
 
-# Initializing haar cascade and video source
+# Initializing haar cascade and image input
 def init(DEBUG, path_image):
     print('begin init')
     if (DEBUG):
@@ -74,9 +78,9 @@ def init(DEBUG, path_image):
     gliveimg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     # Load resistor haar cascade classifier
-    rectcascade = cv2.CascadeClassifier("C:\\Users\\Jens Segaert\\Documents\\GitHub\\case1\\ResistorValue_Open-cv\\cascade\\haarcascade_resistors_0.xml")
+    rectcascade = cv2.CascadeClassifier(os.path.abspath(os.getcwd()) + "\cascade\haarcascade_resistors_0.xml")
 
-    # Give parameters detectMultiScale
+    # Define parameters detectMultiScale
     scale_factor = 1.1
     min_neighbors = 25
     min_size = (30, 30)
@@ -88,6 +92,8 @@ def init(DEBUG, path_image):
         for (x, y, w, h) in ressfind:
             roi_gray = gliveimg[y:y + h, x:x + w]
             roi_color = img[y:y + h, x:x + w]
+            
+            # Create rectangle on image 
             cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
             
             # Apply another detection to filter false positives
@@ -194,11 +200,11 @@ def findBands(resistorInfo, DEBUG):
             if (clr[2] == "RED"):  # Combining the 2 RED ranges in hsv
                 redMask2 = cv2.inRange(hsv, RED_TOP_LOWER, RED_TOP_UPPER)
                 mask = cv2.bitwise_or(redMask2, mask, mask)
-        print('hsv')
-        print(hsv)
-        print('clr')
-        print(clr)
+        
+        
         mask = cv2.bitwise_and(mask, thresh, mask=mask)
+        
+        # Find contours of colorbands
         im2, contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
         print('contours')
@@ -207,11 +213,20 @@ def findBands(resistorInfo, DEBUG):
         # Filter invalid contours, store valid ones
         for k in range(len(contours) - 1, -1, -1):
             print(len(contours))
+            
             if (validContour(contours[k])):
+                # Get Leftmostpoint of each contour
                 Leftmostpoint = tuple(contours[k][contours[k][:, :, 0].argmin()][0])
+                
+                # Get Rightmostpoint of each contour
                 Rightmostpoint = tuple(contours[k][contours[k][:, :, 0].argmax()][0])
+                
+                # Add Leftmostpoint to list
                 bandsPos_left += [Leftmostpoint]
+                
+                # Add Rightmostpoint to list
                 bandsPos_right += [Rightmostpoint]
+               
                 cv2.circle(pre_bil, Leftmostpoint, 5, (255, 0, 255), -1)
             else:
                 contours.pop(k)
@@ -219,6 +234,7 @@ def findBands(resistorInfo, DEBUG):
         # Draw contours
         cv2.drawContours(pre_bil, contours, -1, clr[-1], 3)
 
+        # Show mask and tresholded image
         if (DEBUG):
             cv2.imshow("mask", mask)
             cv2.imshow('thresh', thresh)
@@ -243,8 +259,8 @@ def training_clustering(path_for_training):
         
         """
            Description: take all pictures in directory 'Images_training_specific_resistorfactory_no-artificial-lighting'
-           --> take mean pixel value of each picture
-           --> cluster all RGB-values of each picture
+           --> take mean BGR pixel value of each picture
+           --> cluster all mean RGB-values of each picture
         """
         
         dirs = os.listdir(path_for_training)
@@ -253,7 +269,10 @@ def training_clustering(path_for_training):
         
         # Loop in directory for images
         for item in dirs:
+            
+            # Define fullpath of items in training
             fullpath = os.path.join(path_for_training, item)
+            
             if os.path.isfile(fullpath):
                 img = np.array(Image.open(fullpath))
                 print('foto')
@@ -268,7 +287,7 @@ def training_clustering(path_for_training):
                 # Read image
                 BGR_training_img = cv2.imread(fullpath)
 
-                # Mean pixel value of image (BGR)
+                # Calculate mean BGR pixel value of image 
                 avg_color_per_row = np.average(BGR_training_img, axis=0)
                 avg_color = np.average(avg_color_per_row, axis=0)
 
@@ -316,12 +335,12 @@ def get_color_bands(Left, Right, BGR_list):
     print('begin get_color_bands')
 
     # Check if we have 3 resistorband-contours as we need. If less --> stop function,
-    # If more --> delete last contours leftmostpoints and rightmostpoints
+    # If more --> delete leftmostpoints and rightmostpoints of contours defined after 3 first contours
     if len(Left) > 3:
         del Left[3:]
     if len(Left) < 3:
         print('must have 3 contours to detect resistor')
-        return    # stop function
+        return    # Stop function
     else: # so if there are 3 contours, change nothing
         Left = Left
 
@@ -329,9 +348,10 @@ def get_color_bands(Left, Right, BGR_list):
         del Right[3:]
     if len(Right) < 3:
         print('must have 3 contours to detect resistor')
-        return    # stop function
+        return    # Stop function
     else: # so if there are 3 contours, change nothing
         Right = Right
+    
     print('Left')
     print(Left)
     print('Right')
@@ -341,12 +361,13 @@ def get_color_bands(Left, Right, BGR_list):
     Contour_center_list = []
 
     # Read image of resistor_close_up
-    resistor_close_up_for_rectangles_bands = cv2.imread("C:\\Users\\Jens Segaert\\Documents\\GitHub\\case1\\ResistorValue_Open-cv\\images_code\\bilateral-filter.jpg")
+    resistor_close_up_for_rectangles_bands = cv2.imread(os.path.abspath(os.getcwd()) + "\images_code\bilateral-filter.jpg")
 
 
-    # Line 348-358: Adjust close up image of resistor with color balance
+    # Line 369-379: Adjust close up image of resistor with color balance
+    
     # Open the image
-    img = Image.open(path_images_code + '\\bilateral-filter.jpg')
+    img = Image.open(os.path.abspath(os.getcwd()) + "\images_code\bilateral-filter.jpg")
 
     # Adjust image color balance
     enhancer = ImageEnhance.Color(img)
@@ -360,7 +381,7 @@ def get_color_bands(Left, Right, BGR_list):
     # Save image in folder 'images_code'
     image = editted_output.save(f"{path_images_code}\\editted_image.png")
 
-    resistor_close_up_for_rectangles_bands = cv2.imread(path_images_code + '\\editted_image.png')
+    resistor_close_up_for_rectangles_bands = cv2.imread(os.path.abspath(os.getcwd()) +  '\images_code\editted_image.png')
     
     # Make a copy of image
     copy_resistor_clean = resistor_close_up_for_rectangles_bands.copy()
@@ -383,20 +404,23 @@ def get_color_bands(Left, Right, BGR_list):
     # Pop the x and y-value of each contour center
     for contour_center in range(len(Contour_center_list)):
         BandClose = []
+        
+        # get x-value contour center
         x = [round(float(s)) for s in Contour_center_list[contour_center][0]] # still a list, must be integer
         x = x.pop()
-        print('x')
-        print(x)
+        
+        # get y-value contour center
         y = [round(float(s)) for s in Contour_center_list[contour_center][1]] # still a list, must be integer
         y = y.pop()
-        print('y')
-        print(y)
+        
 
         # Determine left, right, top and bottom for rectangle of center of resistorband
         left = x - 3
         bottom = y
         right = x + 3
         top = y - 15
+        
+        # Create rectangle contourcenter
         rectangle_colorband = cv2.rectangle(resistor_close_up_for_rectangles_bands, (left,bottom),(right,top),(255,255,255),1)
 
         # Get new image of contour center by cropping the center rectangle
@@ -426,19 +450,14 @@ def get_color_bands(Left, Right, BGR_list):
     color_list_bands = []
 
     # Calculate norm between the centerband value and each color cluster center point (from training python files) in BGR
-    # And look where minimum distance is and link this minimum to a color
     # Do this for all contour bands
     for u in range(0,len(list_avg_color_contours)):
       list_distances = []
-      for w in range(0,len(BGR_list)):
+        for w in range(0,len(BGR_list)):
           dst = distance.euclidean(tuple(BGR_list[w]), tuple(list_avg_color_contours[u]))
-          print('dst')
-          print(dst)
+          
           list_distances.append(dst)
-          print('list distances')
-          print(list_distances)
-          print('min list_distances')
-          print(min(list_distances))
+          
 
 
 
@@ -455,11 +474,13 @@ def get_color_bands(Left, Right, BGR_list):
 
     return color_list_bands
 
+
+
 # Function to calculate resistorvalue with information of the color the bands possess.
 def calculate_result(color_list_bands):
     print('begin calculating result')
 
-    # Create a string for the first 2 colorbands
+    # Create an empty string for the first 2 colorbands
     string_first_2bands = ''
 
     # Make integer string of values of first 2 bands
@@ -486,7 +507,7 @@ def calculate_result(color_list_bands):
             string_first_2bands += '9'
     bands_int = int(string_first_2bands)
 
-    # Multiply the int of the string with tenfold determined by color of third colorband
+    # Multiply the integer of the string with tenfold determined by color of third colorband
     if color_list_bands[2] == 'Black':
         bands_int = bands_int *  10**0
     if color_list_bands[2] == 'Brown':
@@ -513,6 +534,8 @@ def calculate_result(color_list_bands):
 
     # Print result string
     print(result_str)
+    
+    
     return result_str , color_list_bands
 
 
@@ -529,11 +552,20 @@ def show_reult(result_str, x, y, w, h, folderpath_editted_image, color_list_band
     # Put text on image
     cv2.putText(img_for_showing_result, result_str, (x, y - 5), FONT, 0.8, (255,0,255), 2, cv2.LINE_AA)
     
-    # Show image and save result image in folder 'result'
+    # Show result image 
     cv2.imshow('Result', img_for_showing_result)
+    
+    # Save result image in folder 'result'
     cv2.imwrite(os.path.join(path_result, 'Image_result__' + result_str + ',' + str(color_list_bands) + ',' + 'MIN_AREA=' + str(MIN_AREA) + '.jpg'), img_for_showing_result)
 
     return
+
+
+
+
+
+
+
 
 
 # Call functions
