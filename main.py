@@ -465,7 +465,7 @@ def get_color_bands(Left, Right, BGR_list):
     # Do this for all contour bands
     for u in range(0,len(list_avg_color_contours)):
       list_distances = []
-        for w in range(0,len(BGR_list)):
+      for w in range(0,len(BGR_list)):
           dst = distance.euclidean(tuple(BGR_list[w]), tuple(list_avg_color_contours[u]))
           
           list_distances.append(dst)
