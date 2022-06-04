@@ -24,8 +24,8 @@ dirs = os.listdir(path)
 def training_clustering(path):
     """
        Take all pictures in directory 'images_training_general'
-       --> take mean pixel value of each picture
-       --> cluster all RGB-values of each picture
+       --> take mean BGR pixel value of each picture
+       --> cluster all mean BGR-values of each picture
        """
     BGR_list = []
     BR_list = []
