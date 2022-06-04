@@ -14,7 +14,7 @@ import numpy
 import matplotlib.pyplot as plt
 import cv2
 from PIL import Image, ImageEnhance
-
+import os
 
 # Example list of left points of contours (This example only works with 'img_4')
 Left = [(117, 112), (181, 46), (244, 155)] 
@@ -66,7 +66,6 @@ def get_color_bands(Left, Right):
         Rightmostpoint_single_contour_x = Right[contour_number][0]
         Leftmostpoint_single_contour_y = Left[contour_number][1]
         Rightmostpoint_single_contour_y = Right[contour_number][1]
-        print(Leftmostpoint_single_contour_x)
         Contour_center_list.append([[(Leftmostpoint_single_contour_x + Rightmostpoint_single_contour_x)/2] , [(Leftmostpoint_single_contour_y + Rightmostpoint_single_contour_y)/2]])
     
 
@@ -141,7 +140,6 @@ def get_color_bands(Left, Right):
 
       # Look for min distance 
       for l in range(0,len(list_distances)):
-             print('cycle')
              if list_distances[l] == min(list_distances):
                 color_list_bands.append(list_colors[l])
       
@@ -207,11 +205,15 @@ def calculate_result(color_list_bands):
         bands_int = bands_int *  10**8
     if color_list_bands[2] == 'White':
         bands_int = bands_int *  10**9
-    
+
     # Print resistorvalue
+    print('Resistorvalue:')
     print(str(bands_int) + ' OHM')
     
     return bands_int
+
+
+
 
 # Call functions
 color_list_bands = get_color_bands(Left, Right)
