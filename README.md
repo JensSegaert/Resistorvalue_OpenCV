@@ -58,7 +58,7 @@ In the directory 'Output_images_code', there are results of the input images fro
 each picture, the result of the resistorvalue, colors of the 3 bands and minimum used area is given.
 
 ### Important for contour detection colorbands!
-Change the parameter 'MIN_AREA' on line 36 in 'main.py'. This is de minimal area the 
+Change the parameter 'MIN_AREA' on line 40 in 'main.py'. This is de minimal area the 
 contours must possess so we count it as a colorband. Sometimes with different pictures depending on the zooming,
 this script can either see too many contours or too less contours.
 The parameter 'MIN_AREA' is also given in the name of the resultpicture in directory 'result'.
