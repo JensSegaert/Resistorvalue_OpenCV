@@ -67,7 +67,8 @@ def init(DEBUG, path):
     ressfind = rectcascade.detectMultiScale(img, scaleFactor=scale_factor, minNeighbors=min_neighbors, minSize=min_size)
 
     if len(ressfind) != 0:
-        # create the bounding box around the detected resistor
+        
+        # Create the bounding box around the detected resistor
         for (x, y, w, h) in ressfind:
             roi_gray = gliveimg[y:y + h, x:x + w]
             roi_color = img[y:y + h, x:x + w]
