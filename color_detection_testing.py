@@ -8,6 +8,7 @@ Date: 03/06/2022
 Note: this code only works for input image'img_4' so if you want to see a part script of main in which the resistor is calculated from comparison with training, 
 firstly go to main and run the script with 'img_4' as input
 """
+
 # Import libraries
 import numpy
 import matplotlib.pyplot as plt
@@ -38,10 +39,7 @@ def get_color_bands(Left, Right):
         return    # Stop function because all contours are not detected
     else: # So if there are 3 contours
         Right= Right
-    print('Left')
-    print(Left)
-    print('Right')
-    print(Right)
+    
     Contour_center_list = []
 
     # Define path for image used in testing
@@ -70,20 +68,16 @@ def get_color_bands(Left, Right):
         Rightmostpoint_single_contour_y = Right[contour_number][1]
         print(Leftmostpoint_single_contour_x)
         Contour_center_list.append([[(Leftmostpoint_single_contour_x + Rightmostpoint_single_contour_x)/2] , [(Leftmostpoint_single_contour_y + Rightmostpoint_single_contour_y)/2]])
-    print('Contour_center_list')
-    print(Contour_center_list)
+    
 
     list_avg_color_contours = []
     for contour_center in range(len(Contour_center_list)):
         BandClose = []
         x = [round(float(s)) for s in Contour_center_list[contour_center][0]] # still a list, must be integer
         x = x.pop()
-        print('x')
-        print(x)
         y = [round(float(s)) for s in Contour_center_list[contour_center][1]] # still a list, must be integer
         y = y.pop()
-        print('y')
-        print(y)
+     
 
         # Determine left, right, top and bottom for rectangle of center of resistorband
         left = x - 3
@@ -109,9 +103,7 @@ def get_color_bands(Left, Right):
         tuple_avg_color_center_contour = tuple(avg_color_center_contour)
         list_avg_color_contours.append(list(avg_color_center_contour))
 
-        print('avg_color_center_contour')
-        print(tuple_avg_color_center_contour)
-        print(list_avg_color_contours)
+   
 
 
     # Define cluster center list from training
@@ -139,24 +131,20 @@ def get_color_bands(Left, Right):
       for w in range(0,len(list_cluster_centers)):
           from scipy.spatial import distance
 
+          # Calculate distance to every clustercenter of each color
           dst = distance.euclidean(tuple(list_cluster_centers[w]), tuple(list_avg_color_contours[u]))
-          print('dst')
-          print(dst)
+
           list_distances.append(dst)
-          print('list distances')
-          print(list_distances)
-          print('min list_distances')
-          print(min(list_distances))
+          
 
 
 
-
+      # Look for min distance 
       for l in range(0,len(list_distances)):
              print('cycle')
              if list_distances[l] == min(list_distances):
                 color_list_bands.append(list_colors[l])
-      print('color_list_bands')
-      print(color_list_bands)
+      
 
       # Plot BR cluster center- values
       for i in range(0, len(list_cluster_centers)):
@@ -219,7 +207,10 @@ def calculate_result(color_list_bands):
         bands_int = bands_int *  10**8
     if color_list_bands[2] == 'White':
         bands_int = bands_int *  10**9
+    
+    # Print resistorvalue
     print(str(bands_int) + ' OHM')
+    
     return bands_int
 
 # Call functions
