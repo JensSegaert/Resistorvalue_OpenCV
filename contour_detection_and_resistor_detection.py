@@ -55,7 +55,7 @@ def init(DEBUG, path):
     gliveimg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     # Load resistor haar cascade classifier
-    rectcascade = cv2.CascadeClassifier("C:\\Users\\Jens Segaert\\Documents\\Resistorvalue_OpenCV-main\\cascade\\haarcascade_resistors_0.xml")
+    rectcascade = cv2.CascadeClassifier(os.path.abspath(os.getcwd()) + "\cascade\haarcascade_resistors_0.xml")
     ressfind = rectcascade.detectMultiScale(img, scaleFactor=scale_factor, minNeighbors=min_neighbors, minSize=min_size)
 
     if len(ressfind) != 0:
@@ -207,7 +207,7 @@ def findBands(resistorInfo, DEBUG):
 
 
 # Call functions
-path = "C:\\Users\\Jens Segaert\\Documents\\ResistorValue_OpenCV-main\\input_images\\img_4.png"
+path = os.path.abspath(os.getcwd()) + "\input_images\img_4.png"
 img, rectCascade = init(DEBUG, path)
 while (not (cv2.waitKey(1) == ord('q'))):
     cliveimg = cv2.imread(path)
