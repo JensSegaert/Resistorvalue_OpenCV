@@ -25,7 +25,7 @@ def training_clustering(path):
     """
        Take all pictures in directory 'images_training_specific_resistorfactory_no-artificial-lighting'
        --> take mean BGR pixel value of each picture
-       --> cluster all BGR-values of each picture
+       --> cluster all mean BGR-values of each picture
        """
     BGR_list = []
     BR_list = []
