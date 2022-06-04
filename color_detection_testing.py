@@ -4,7 +4,10 @@ Author: Jens Segaert
 Date: 03/06/2022
 """
 #########################################################################################################################
-
+"""
+Note: this code only works for input image'img_4' so if you want to see a part script of main in which the resistor is calculated from comparison with training, 
+firstly go to main and run the script with 'img_4' as input
+"""
 # Import libraries
 import numpy
 import matplotlib.pyplot as plt
@@ -223,4 +226,4 @@ def calculate_result(color_list_bands):
 color_list_bands = get_color_bands(Left, Right)
 bands_int = calculate_result(color_list_bands)
 
-cv2.waitKey(7000)
+cv2.waitKey(4000)
