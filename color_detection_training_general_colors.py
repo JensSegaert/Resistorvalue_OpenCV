@@ -23,7 +23,7 @@ dirs = os.listdir(path)
 
 def training_clustering(path):
     """
-       Take all pictures in directory 'Images_training_specific_resistorfactory_no-artificial-lighting'
+       Take all pictures in directory 'images_training_general'
        --> take mean pixel value of each picture
        --> cluster all RGB-values of each picture
        """
