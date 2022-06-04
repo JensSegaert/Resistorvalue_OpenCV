@@ -24,11 +24,17 @@ COLOUR_BOUNDS = [
     [(0, 0, 50), (179, 50, 80), "GRAY", 8, (128, 128, 128)],
     [(0, 0, 90), (179, 15, 250), "WHITE", 9, (255, 255, 255)],
 ];
+
+# Define parameters for using haarcascade in script (detectMultiScale)
 scale_factor = 1.1
 min_neighbors = 25
 min_size = (30, 30)
+
+# For red mask
 RED_TOP_LOWER = (160, 30, 80)
 RED_TOP_UPPER = (179, 255, 200)
+
+# Define min area for contour validation
 MIN_AREA = 700
 FONT = cv2.FONT_HERSHEY_SIMPLEX
 
@@ -49,6 +55,8 @@ def init(DEBUG, path):
         cv2.createTrackbar("lv", "frame", 0, 255, empty)
         cv2.createTrackbar("uv", "frame", 0, 255, empty)
     resClose = []
+    
+    # Read image
     img = cv2.imread(path)
 
     # Convert to grayscale
@@ -69,11 +77,15 @@ def init(DEBUG, path):
             secondPass = rectcascade.detectMultiScale(roi_gray, 1.01, 5)
             if (len(secondPass) != 0):
                 resClose.append((np.copy(roi_color), (x, y, w, h)))
+    
+    # Show image of resistor detection
     cv2.imshow("Resistor Detection", img)
+    
     k = cv2.waitKey(30)
     if k == 27:  # Wait for ESC key to exit
         cv2.destroyAllWindows()
     print(resClose)
+    
     return (img, rectcascade)
 
 
@@ -109,6 +121,7 @@ def findResistors(img, rectCascade):
 
         if (len(secondPass) != 0):
             resClose.append((np.copy(roi_color), (x, y, w, h)))
+    
     return resClose
 
 list_bandspos = []
@@ -164,11 +177,11 @@ def findBands(resistorInfo, DEBUG):
             if (clr[2] == "RED"):  # combining the 2 RED ranges in hsv
                 redMask2 = cv2.inRange(hsv, RED_TOP_LOWER, RED_TOP_UPPER)
                 mask = cv2.bitwise_or(redMask2, mask, mask)
-        print('hsv')
-        print(hsv)
-        print('clr')
-        print(clr)
+        
+        
         mask = cv2.bitwise_and(mask, thresh, mask=mask)
+        
+        # Find contours
         im2, contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
 
@@ -189,6 +202,7 @@ def findBands(resistorInfo, DEBUG):
         # Draw contours
         cv2.drawContours(pre_bil, contours, -1, clr[-1], 3)
 
+        # Show mask and tresholded image 
         if (DEBUG):
             cv2.imshow("mask", mask)
             cv2.imshow('thresh', thresh)
@@ -206,8 +220,15 @@ def findBands(resistorInfo, DEBUG):
 
 
 
-# Call functions
+
+
+
+
+# Define path of input image
 path = os.path.abspath(os.getcwd()) + "\input_images\img_4.png"
+
+
+# Call functions
 img, rectCascade = init(DEBUG, path)
 while (not (cv2.waitKey(1) == ord('q'))):
     cliveimg = cv2.imread(path)
