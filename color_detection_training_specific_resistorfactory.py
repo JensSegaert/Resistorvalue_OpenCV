@@ -35,17 +35,17 @@ def training_clustering(path):
             img = np.array(Image.open(fullpath))
             print('foto')
 
-            # print name_picture:: name_picture = string of fullpath substracted from path string to get name of image itself
+            # Print name_picture:: name_picture = string of fullpath substracted from path string to get name of image itself
             name_picture = fullpath.replace(path, '')
 
-            # remove '\' from image name just for printing
+            # Remove '\' from image name just for printing
             name_picture = name_picture.replace('\\', '')
             print(name_picture)
 
             # Read image
             BGR_training_img = cv2.imread(fullpath)
 
-            # Mean pixel value of image (BGR)
+            # Calculate mean BGR pixel value of image 
             avg_color_per_row = numpy.average(BGR_training_img, axis=0)
             avg_color = numpy.average(avg_color_per_row, axis=0)
 
@@ -67,7 +67,7 @@ def training_clustering(path):
             print('BR_list for now')
             print(BR_list)
 
-    # cluster mean BGR-values images
+    # Cluster mean BGR-values images
     # n_clusters is the number of clusters you want to use to classify your data
     kmeans_BGR = KMeans(n_clusters=10, random_state=0).fit(BGR_list)
 
@@ -83,8 +83,8 @@ def training_clustering(path):
     print(list_cluster_centers_BGR)
 
     """Only for plotting BR-graph!"""
-    # we can now choose to plot clusters. This is going to be a 2D-plot given the Hue and Value of the HSV-values
-    # cluster HV-values
+    # We can now choose to plot clusters. This is going to be a 2D-plot given the Hue and Value of the HSV-values
+    # Cluster BR-values
     kmeans_BR = KMeans(n_clusters=10, random_state=0).fit(BR_list)
 
     # See the labels with:
@@ -139,6 +139,7 @@ def training_clustering(path):
          if list_labels[h] == 9:
              label9_list.append(BGR_list[h])
 
+    # Plot all labels with their appropriate color            
     for i in range(0,len(label0_list)):
         plt.scatter(label0_list[i][0], label0_list[i][1], color='Green')
     for i in range(0, len(label1_list)):
@@ -162,6 +163,7 @@ def training_clustering(path):
 
     # plt.scatter(centroids_BR[:, 0], centroids_BR[:, 1], s=80, color='Black')
     plt.legend()
+    
     # Displaying the title
     plt.title("BR-plot")
 
