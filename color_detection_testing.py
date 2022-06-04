@@ -122,8 +122,8 @@ def get_color_bands(Left, Right):
 
 
     color_list_bands = []
+    
     # Calculate norm between the centerband value and each color cluster center point (from training python files) in BGR
-    # And look where minimum distance is and link this minimum to a color
     # Do this for all contour bands
     for u in range(0,len(list_avg_color_contours)):
       list_distances = []
@@ -158,6 +158,7 @@ def get_color_bands(Left, Right):
 def calculate_result(color_list_bands):
     print('begin showing result')
     
+    # Make empty string 
     string_first_2bands = ''
     
     # Create integer string of first 2 bands
