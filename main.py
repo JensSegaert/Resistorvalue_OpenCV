@@ -39,16 +39,16 @@ FONT = cv2.FONT_HERSHEY_SIMPLEX
 # Edit: change 'MIN_AREA' to set minimum area for contour validation of resistorbands
 MIN_AREA = 700
 
-# Edit: path to save all images from running code in folder 'images_code'
+# Path to save all images from running code in folder 'images_code'
 path_images_code = os.path.abspath(os.getcwd()) + '\images_code'
 
-# Edit: choose path of image input of resistor
+# Path of image input of resistor
 path_image = os.path.abspath(os.getcwd()) + "\input_images\img_4.png"
 
-# Edit: path to save result
+# Path to save result
 path_result = os.path.abspath(os.getcwd()) + '\\' + 'result'
 
-# Edit: path for training
+# Path for training
 path_for_training = os.path.abspath(os.getcwd()) + "\images_training_specific_resistorfactory_no-artificial-lighting"
 
 
@@ -101,8 +101,10 @@ def init(DEBUG, path_image):
             if (len(secondPass) != 0):
                 resClose.append((np.copy(roi_color), (x, y, w, h)))
 
-    # Show image of detected resistor and save it in folder 'images_code'
+    # Show image of detected resistor 
     cv2.imshow("Resistor Detection", img)
+    
+    # Save image of detected resistor in folder 'images_code'
     cv2.imwrite(os. path. join(path_images_code , 'resistor_detection_by_haarcascade.jpg'), img)
 
     return (img, rectcascade)
@@ -170,17 +172,23 @@ def findBands(resistorInfo, DEBUG):
     resPos = resistorInfo[1]
 
 
-    # Apply bilateral filter and convert to hsv
+    # Apply bilateral filter 
     pre_bil = cv2.bilateralFilter(resImg, 15, 80, 80)
+    
+    # Convert to hsv
     hsv = cv2.cvtColor(pre_bil, cv2.COLOR_BGR2HSV)
+    
+    # Save image of bilateral filter in folder 'images_code'
     cv2.imwrite(os.path.join(path_images_code, 'bilateral-filter.jpg'), pre_bil)
 
     # Edge threshold filters out background and resistor body
     thresh = cv2.adaptiveThreshold(cv2.cvtColor(pre_bil, cv2.COLOR_BGR2GRAY), 255, cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY, 59, 5)
     thresh = cv2.bitwise_not(thresh)
 
-    # Show tresholded image of resistor close-up  and save image in folder 'images_code'
+    # Show tresholded image of resistor close-up 
     cv2.imshow('resistor_close-up_tresholded', thresh)
+    
+    # Save image in folder 'images_code'
     cv2.imwrite(os. path. join(path_images_code , 'resistor_close-up_tresholded.jpg'), thresh)
 
     bandsPos_left = []
@@ -215,6 +223,7 @@ def findBands(resistorInfo, DEBUG):
             print(len(contours))
             
             if (validContour(contours[k])):
+                
                 # Get Leftmostpoint of each contour
                 Leftmostpoint = tuple(contours[k][contours[k][:, :, 0].argmin()][0])
                 
@@ -239,8 +248,10 @@ def findBands(resistorInfo, DEBUG):
             cv2.imshow("mask", mask)
             cv2.imshow('thresh', thresh)
 
-    # Show and save image of colorband-contours in folder 'images_code'
+    # Show contour display image
     cv2.imshow('Contour Display', pre_bil)  # Shows the most recent resistor checked.
+    
+    # Save image of colorband-contours in folder 'images_code'
     cv2.imwrite(os. path. join(path_images_code , 'contour_color_bands.jpg'), pre_bil)
 
     print('sorted bandspos_left')
@@ -277,7 +288,7 @@ def training_clustering(path_for_training):
                 img = np.array(Image.open(fullpath))
                 print('foto')
 
-                # print name_picture:: name_picture = string of fullpath substracted from path string to get name of image itself
+                # print name_picture:: name of picture = string of fullpath substracted from path string to get name of image itself
                 name_picture = fullpath.replace(path_for_training, '')
 
                 # remove '\' from image name just for printing
@@ -364,7 +375,7 @@ def get_color_bands(Left, Right, BGR_list):
     resistor_close_up_for_rectangles_bands = cv2.imread(os.path.abspath(os.getcwd()) + "\images_code\bilateral-filter.jpg")
 
 
-    # Line 369-379: Adjust close up image of resistor with color balance
+    # Line 380-390: Adjust close up image of resistor with color balance
     
     # Open the image
     img = Image.open(os.path.abspath(os.getcwd()) + "\images_code\bilateral-filter.jpg")
@@ -378,9 +389,10 @@ def get_color_bands(Left, Right, BGR_list):
     # Output editted input image
     editted_output = enhancer.enhance(factor)
     
-    # Save image in folder 'images_code'
+    # Save editted image in folder 'images_code'
     image = editted_output.save(f"{path_images_code}\\editted_image.png")
-
+    
+    # Read editted image
     resistor_close_up_for_rectangles_bands = cv2.imread(os.path.abspath(os.getcwd()) +  '\images_code\editted_image.png')
     
     # Make a copy of image
@@ -405,11 +417,11 @@ def get_color_bands(Left, Right, BGR_list):
     for contour_center in range(len(Contour_center_list)):
         BandClose = []
         
-        # get x-value contour center
+        # Get x-value contour center
         x = [round(float(s)) for s in Contour_center_list[contour_center][0]] # still a list, must be integer
         x = x.pop()
         
-        # get y-value contour center
+        # Get y-value contour center
         y = [round(float(s)) for s in Contour_center_list[contour_center][1]] # still a list, must be integer
         y = y.pop()
         
@@ -420,14 +432,14 @@ def get_color_bands(Left, Right, BGR_list):
         right = x + 3
         top = y - 15
         
-        # Create rectangle contourcenter
+        # Create rectangles of contourcenters
         rectangle_colorband = cv2.rectangle(resistor_close_up_for_rectangles_bands, (left,bottom),(right,top),(255,255,255),1)
 
         # Get new image of contour center by cropping the center rectangle
         im2 = copy_resistor_clean[top: bottom, left: right]
         cv2.imwrite(os.path.join(path_images_code, 'resistor_center_band_close_up' + str(contour_center) + '.jpg'), im2)
 
-        # Show the image of the contourcenter and save it in folder 'path_images_code'
+        # Show the image of the contourcenter and save it in folder 'images_code'
         cv2.imshow('Band_contour_center', rectangle_colorband)
         cv2.imwrite(os.path.join(path_images_code, 'band_contour_centers.jpg'), rectangle_colorband)
 
@@ -458,8 +470,6 @@ def get_color_bands(Left, Right, BGR_list):
           
           list_distances.append(dst)
           
-
-
 
       # Go off distance list and look for minimum distance,
       # Link this to the color and put color string of list_colors in 'color_list_bands'
