@@ -42,7 +42,7 @@ def get_color_bands(Left, Right):
     Contour_center_list = []
 
     # Define path for image used in testing
-    path_editted_image = "C:\\Users\\Jens Segaert\\Documents\\Resistorvalue_OpenCV-main\\images_code\\editted_image.png"
+    path_editted_image = os.path.abspath(os.getcwd()) + "\images_code\editted_image.png"
 
     # Open the image
     img = Image.open(path_editted_image)
