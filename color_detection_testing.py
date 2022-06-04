@@ -12,10 +12,10 @@ import cv2
 from PIL import Image, ImageEnhance
 
 
-# Example list of left points of contours
-Left = [(117, 112), (181, 46), (244, 155)]
+# Example list of left points of contours (This example only works with 'img_4')
+Left = [(117, 112), (181, 46), (244, 155)] 
 
-# Example list of right points of contours
+# Example list of right points of contours (This example only works with 'img_4')
 Right = [(153, 44), (213, 161), (270, 159)]
 
 def get_color_bands(Left, Right):
