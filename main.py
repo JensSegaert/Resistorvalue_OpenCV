@@ -378,7 +378,7 @@ def get_color_bands(Left, Right, BGR_list):
     # Line 380-390: Adjust close up image of resistor with color balance
     
     # Open the image
-    img = Image.open(os.path.abspath(os.getcwd()) + "\images_code\bilateral-filter.jpg")
+    img = Image.open(os.path.abspath(os.getcwd()) + "\images_code' + '\\' +  'bilateral-filter.jpg")
 
     # Adjust image color balance
     enhancer = ImageEnhance.Color(img)
