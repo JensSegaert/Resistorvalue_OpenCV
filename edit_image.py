@@ -25,5 +25,5 @@ def edit_input_image(path_image):
     return
 
 # Call function (input: given path of image that needs to be editted)
-edit_input_image('C:\\Users\\Jens Segaert\\Documents\\Resistorvalue_OpenCV-main\\input_images\\img.png')
+edit_input_image(os.path.abspath(os.getcwd()) + '\input_images\img_4.png')
 
