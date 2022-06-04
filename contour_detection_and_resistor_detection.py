@@ -71,7 +71,7 @@ def init(DEBUG, path):
         for (x, y, w, h) in ressfind:
             roi_gray = gliveimg[y:y + h, x:x + w]
             roi_color = img[y:y + h, x:x + w]
-            cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 1)
+            cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
             
             # Apply secondPass to filter false positives
             secondPass = rectcascade.detectMultiScale(roi_gray, 1.01, 5)
