@@ -288,10 +288,10 @@ def training_clustering(path_for_training):
                 img = np.array(Image.open(fullpath))
                 print('foto')
 
-                # print name_picture:: name of picture = string of fullpath substracted from path string to get name of image itself
+                # Print name_picture:: name of picture = string of fullpath substracted from path string to get name of image itself
                 name_picture = fullpath.replace(path_for_training, '')
 
-                # remove '\' from image name just for printing
+                # Remove '\' from image name just for printing
                 name_picture = name_picture.replace('\\', '')
                 print(name_picture)
 
