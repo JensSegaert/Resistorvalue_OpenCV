@@ -10,8 +10,10 @@ import cv2
 import numpy as np
 import os
 
-
+# Predefine DEBUG as False
 DEBUG = False
+
+# List colour bounds
 COLOUR_BOUNDS = [
     [(0, 0, 0), (179, 255, 93), "BLACK", 0, (0, 0, 0)],
     [(0, 90, 10), (15, 250, 100), "BROWN", 1, (0, 51, 102)],
