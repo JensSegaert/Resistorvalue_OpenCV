@@ -23,6 +23,7 @@ def edit_input_image(path_image):
     # Color balance the image with factor 2.5
     factor = 2.5
 
+    # Create output image with color balance of input image
     colored_output = enhancer.enhance(factor)
 
     # Show input image
