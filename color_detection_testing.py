@@ -136,8 +136,6 @@ def get_color_bands(Left, Right):
           list_distances.append(dst)
           
 
-
-
       # Look for min distance 
       for l in range(0,len(list_distances)):
              if list_distances[l] == min(list_distances):
