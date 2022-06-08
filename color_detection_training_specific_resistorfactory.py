@@ -21,6 +21,8 @@ import os.path
 path = os.path.abspath(os.getcwd()) + "\images_training_specific_resistorfactory_no-artificial-lighting"
 dirs = os.listdir(path)
 
+
+
 def training_clustering(path):
     """
        Take all pictures in directory 'images_training_specific_resistorfactory_no-artificial-lighting'
@@ -29,7 +31,11 @@ def training_clustering(path):
        """
     BGR_list = []
     BR_list = []
+    
+    # Loop in directory for images
     for item in dirs:
+        
+        # Define fullpath of items in training
         fullpath = os.path.join(path,item)
         if os.path.isfile(fullpath):
             img = np.array(Image.open(fullpath))
@@ -161,8 +167,7 @@ def training_clustering(path):
     for i in range(0,len(label9_list)):
         plt.scatter(label9_list[i][0], label9_list[i][1], color='Brown')
 
-    # plt.scatter(centroids_BR[:, 0], centroids_BR[:, 1], s=80, color='Black')
-    plt.legend()
+    
     
     # Displaying the title
     plt.title("BR-plot")
